@@ -11,7 +11,7 @@ def get_account(n=0):
 
 def get_contract(contract, *args, account=get_account(), contract_address="", contract_name="Monate", _deploy=False):
     if _deploy:
-        deploy(contract,account, *args)
+        return deploy(contract,account, *args)
     elif (network.show_active() in LOCAL_NETWORKS):
         try:
             return contract[-1]
