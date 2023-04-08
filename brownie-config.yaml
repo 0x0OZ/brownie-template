@@ -1,0 +1,14 @@
+autofetch_sources: true
+dependencies:
+  - OpenZeppelin/openzeppelin-contracts@4.8.1
+compiler:
+  solc:
+    remappings:
+      - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.8.1"
+networks:
+  default: 'ganache-local'
+  #private:
+
+dotenv: .env
+wallets:
+  from: ${PRIVATE_KEY}
