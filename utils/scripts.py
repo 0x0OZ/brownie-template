@@ -2,6 +2,7 @@
 from brownie import accounts, config, Contract, network  # type: ignore
 LOCAL_NETWORKS = ["development", 'ganache-local', 'private']
 
+
 def get_account(n=0):
     if network.show_active() in LOCAL_NETWORKS:
         return accounts[n]
@@ -9,22 +10,20 @@ def get_account(n=0):
         return accounts.add(config['wallets']['from'])
 
 
-def get_contract(contract, *args, account=get_account(), contract_address="", contract_name="Monate", _deploy=False):
+def get_contract(contract, *args, account=get_account(), contract_address="", contract_name="Monate", _deploy=False, n=-1):
     if _deploy:
-        return deploy(contract,account, *args)
-    elif (network.show_active() in LOCAL_NETWORKS):
-        try:
-            return contract[-1]
-        except:
-            return deploy(contract,account, *args)
-    else:
-        if not contract_address:
-            raise Exception("Address can't be null")
+        return deploy(contract, account, *args)
+    if contract_address and contract_address != ('0x' + '0'*40):
         abi = contract.abi
         return Contract.from_abi(contract_name, contract_address, abi)
+    try:
+        return contract[n]
+    except:
+        return deploy(contract, account, *args)
+    #return deploy(contract, account, *args)
 
 
-def deploy(contract,account, *args):
+def deploy(contract, account, *args):
     if len(args) == 0:
         return contract.deploy({"from": account})
     return contract.deploy(*args, {"from": account})
